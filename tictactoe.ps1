@@ -1,3 +1,6 @@
+### Programming Practice Dec 09 2020
+### CHI SHING POON
+
 #Init Array
 $arrayA = " ", " ", " "
 $arrayB = " ", " ", " "

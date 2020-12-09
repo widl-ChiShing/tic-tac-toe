@@ -1,8 +1,9 @@
-﻿#Init Array
-$array1 = " ", " ", " "
-$array2 = " ", " ", " "
-$array3 = " ", " ", " "
+#Init Array
+$arrayA = " ", " ", " "
+$arrayB = " ", " ", " "
+$arrayC = " ", " ", " "
 
+$index = "A", "B", "C"
 $numeric = "1","2","3","4","5","6","7","8","9","0"
 #Condition to keep game running
 $gameEnd = 1
@@ -10,14 +11,14 @@ $playAgain = "E"
 #Keep tracks of players
 $player = 1
 #Symbols for players
-$symbol = "x", "o"
+$symbol = "o", "x"
 
 Function CreateGameBoard{
     #Creating/Updating Game Board
-    Write-Host "`nTic-Tac-Toe :D`n"
+    Write-Host "`nTic-Tac-Toe :D"
 
     for($count = 0; $count -lt 3; $count++){
-        Write-Host $array1[$count] -NoNewLine
+        Write-Host $arrayA[$count] -NoNewLine
         if($count -ne 2){
             Write-Host "|" -NoNewLine
             }
@@ -25,7 +26,7 @@ Function CreateGameBoard{
     Write-Host ""
 
     for($count = 0; $count -lt 3; $count++){
-        Write-Host $array2[$count] -NoNewLine
+        Write-Host $arrayB[$count] -NoNewLine
         if($count -ne 2){
             Write-Host "|" -NoNewLine
             }
@@ -33,7 +34,7 @@ Function CreateGameBoard{
     Write-Host ""
 
     for($count = 0; $count -lt 3; $count++){
-        Write-Host $array3[$count] -NoNewLine
+        Write-Host $arrayC[$count] -NoNewLine
         if($count -ne 2){
             Write-Host "|" -NoNewLine
             }
@@ -42,8 +43,8 @@ Function CreateGameBoard{
 }
 
 #Game instructions
-Write-Host "To play: Enter the indexes of the slot.`ni.e. For the middle box, enter: 2,2. "
-Write-Host "For top left corner, enter: 1,1. For top right corner, enter: 1,3."
+Write-Host "To play: Row one has an index of A, Row two has an index of B, and Row three is C."
+Write-Host "To select top left corner, please enter: A1. Middle Top: A2, Bottom Right: C3."
 
 
 while($gameEnd -eq 1){
@@ -53,95 +54,110 @@ CreateGameBoard
 
 #Get User Input
 $userInput = Read-Host "Please enter your choice: "
-foreach($numbers in $numeric){
-    if($userInput[0] -eq $numbers){
-        $validation1 = "Y"
-    }
-    if($userInput[2] -eq $numbers){
-        $validation2 = "Y"
-    }
-}
+
 
 #Assign input to new board
 $changedX = $userInput.Substring(0,1)
 $changedY = $userInput.Substring($userInput.length - 1)
 
-while($validation1 -eq "Y" -AND $validation2 -eq "Y"){
-    switch($changedX){
-    1 {
-        switch($changedY){
-            1 {$array1[0] = $symbol[$player-1]}
-            2 {$array1[1] = $symbol[$player-1]}
-            3 {$array1[2] = $symbol[$player-1]}
-            }               
-        }                   
-    2 {                     
-        switch($changedY){ 
-            1 {$array2[0] = $symbol[$player-1]}
-            2 {$array2[1] = $symbol[$player-1]}
-            3 {$array2[2] = $symbol[$player-1]}
-            }               
-        }                   
-    3 {                     
-        switch($changedY){  
-            1 {$array3[0] = $symbol[$player-1]}
-            2 {$array3[1] = $symbol[$player-1]}
-            3 {$array3[2] = $symbol[$player-1]}
+#Validation on inputs
+foreach($choice in $index){
+    if($changedX -eq $choice){
+        $validation1 = "Y"
+        foreach($numbers in $numeric){
+            if($changedY -eq $numbers){
+                $validation2 = "Y"
             }
         }
     }
+}
+
+#Register moves
+if($validation1 -eq "Y" -AND $validation2 -eq "Y"){
+    switch($changedX){
+    "A" {
+        switch($changedY){
+            1 {$arrayA[0] = $symbol[$player-1]}
+            2 {$arrayA[1] = $symbol[$player-1]}
+            3 {$arrayA[2] = $symbol[$player-1]}
+            }               
+        }                   
+    "B" {                     
+        switch($changedY){ 
+            1 {$arrayB[0] = $symbol[$player-1]}
+            2 {$arrayB[1] = $symbol[$player-1]}
+            3 {$arrayB[2] = $symbol[$player-1]}
+            }               
+        }                   
+    "C" {                     
+        switch($changedY){  
+            1 {$arrayC[0] = $symbol[$player-1]}
+            2 {$arrayC[1] = $symbol[$player-1]}
+            3 {$arrayC[2] = $symbol[$player-1]}
+            }
+        }
+    }
+
+    
+    #Win Check
+    if($arrayA[0] -eq $arrayA[1] -AND $arrayA[0] -eq $arrayA[2] -AND $arrayA[0] -ne " "){
+        CreateGameBoard
+        Write-Host "`nPlayer" $symbol[$player-1] "has won!"
+        $playAgain = Read-Host "`nPlay again? (Y/N) . . ."
+    }elseif($arrayB[0] -eq $arrayB[1] -AND $arrayB[0] -eq $arrayB[2] -AND $arrayB[0] -ne " "){
+        CreateGameBoard
+        Write-Host "`nPlayer" $symbol[$player-1] "has won!"
+        $playAgain = Read-Host "`nPlay again? (Y/N) . . ."
+    }elseif($arrayC[0] -eq $arrayC[1] -AND $arrayC[0] -eq $arrayC[2] -AND $arrayC[0] -ne " "){
+        CreateGameBoard
+        Write-Host "`nPlayer" $symbol[$player-1] "has won!"
+        $playAgain = Read-Host "`nPlay again? (Y/N) . . ."
+    }elseif($arrayA[0] -eq $arrayB[1] -AND $arrayA[0] -eq $arrayC[2] -AND $arrayA[0] -ne " "){
+        CreateGameBoard
+        Write-Host "`nPlayer" $symbol[$player-1] "has won!"
+        $playAgain = Read-Host "`nPlay again? (Y/N) . . ."
+    }elseif($arrayC[0] -eq $arrayB[1] -AND $arrayC[0] -eq $arrayA[2] -AND $arrayC[0] -ne " "){
+        CreateGameBoard
+        Write-Host "`nPlayer" $symbol[$player-1] "has won!"
+        $playAgain = Read-Host "`nPlay again? (Y/N) . . ."
+    }elseif($arrayA[0] -eq $arrayB[0] -AND $arrayA[0] -eq $arrayC[0] -AND $arrayA[0] -ne " "){
+        CreateGameBoard
+        Write-Host "`nPlayer" $symbol[$player-1] "has won!"
+        $playAgain = Read-Host "`nPlay again? (Y/N) . . ."
+    }elseif($arrayA[1] -eq $arrayB[1] -AND $arrayA[1] -eq $arrayC[1] -AND $arrayA[1] -ne " "){
+        CreateGameBoard
+        Write-Host "`nPlayer" $symbol[$player-1] "has won!"
+        $playAgain = Read-Host "`nPlay again? (Y/N) . . ."
+    }elseif($arrayA[2] -eq $arrayB[2] -AND $arrayA[2] -eq $arrayC[2] -AND $arrayA[2] -ne " "){
+        CreateGameBoard
+        Write-Host "`nPlayer" $symbol[$player-1] "has won!"
+        $playAgain = Read-Host "`nPlay again? (Y/N) . . ."
+    }
+
+    #Switch Player
+    if($player -eq 1){
+       $player = 2
+    }else {
+        $player = 1
+        }
+
     $validation1 = "N"
     $validation2 = "N"
+
+}else{
+    Write-Host "Please enter a valid input!"
 }
     
 
 
 
 
-#Win Check
-if($array1[0] -eq $array1[1] -AND $array1[0] -eq $array1[2] -AND $array1[0] -ne " "){
-    CreateGameBoard
-    Write-Host "`nPlayer" $player "has won!"
-    $playAgain = Read-Host "`nPlay again? (Y/N) . . ."
-}elseif($array2[0] -eq $array2[1] -AND $array2[0] -eq $array2[2] -AND $array2[0] -ne " "){
-    CreateGameBoard
-    Write-Host "`nPlayer" $player "has won!"
-    $playAgain = Read-Host "`nPlay again? (Y/N) . . ."
-}elseif($array3[0] -eq $array3[1] -AND $array3[0] -eq $array3[2] -AND $array3[0] -ne " "){
-    CreateGameBoard
-    Write-Host "`nPlayer" $player "has won!"
-    $playAgain = Read-Host "`nPlay again? (Y/N) . . ."
-}elseif($array1[0] -eq $array2[1] -AND $array1[0] -eq $array3[2] -AND $array1[0] -ne " "){
-    CreateGameBoard
-    Write-Host "`nPlayer" $player "has won!"
-    $playAgain = Read-Host "`nPlay again? (Y/N) . . ."
-}elseif($array3[0] -eq $array2[1] -AND $array3[0] -eq $array1[2] -AND $array3[0] -ne " "){
-    CreateGameBoard
-    Write-Host "`nPlayer" $player "has won!"
-    $playAgain = Read-Host "`nPlay again? (Y/N) . . ."
-}elseif($array1[0] -eq $array2[0] -AND $array1[0] -eq $array3[0] -AND $array1[0] -ne " "){
-    CreateGameBoard
-    Write-Host "`nPlayer" $player "has won!"
-    $playAgain = Read-Host "`nPlay again? (Y/N) . . ."
-}elseif($array1[1] -eq $array2[1] -AND $array1[1] -eq $array3[1] -AND $array1[1] -ne " "){
-    CreateGameBoard
-    Write-Host "`nPlayer" $player "has won!"
-    $playAgain = Read-Host "`nPlay again? (Y/N) . . ."
-}elseif($array1[2] -eq $array2[2] -AND $array1[2] -eq $array3[2] -AND $array1[2] -ne " "){
-    CreateGameBoard
-    Write-Host "`nPlayer" $player "has won!"
-    $playAgain = Read-Host "`nPlay again? (Y/N) . . ."
-}#Switch Player
-elseif($player -eq 1){
-       $player = 2
-    }else {
-        $player = 1
-        }
 
+#Reset Gameboard or exit when game is over
 if($playAgain -eq "Y"){
-    $array1 = " ", " ", " "
-    $array2 = " ", " ", " "
-    $array3 = " ", " ", " "
+    $arrayA = " ", " ", " "
+    $arrayB = " ", " ", " "
+    $arrayC = " ", " ", " "
     $playAgain = "E"
 }elseif($playAgain -eq "N"){
     $gameEnd = 2
